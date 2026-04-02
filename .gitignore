@@ -1,0 +1,6 @@
+# Ignore build artifacts
+lib/
+# Ignore compiled tests
+ctests/
+# Ignore compiled tools
+bin/
