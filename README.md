@@ -35,26 +35,7 @@ void sshashs128(uint32_t state[8], uint32_t hash[4]);
 - `sshasha128`: Absorbs data into the 256-bit state. Returns updated counter for chaining.
 - `sshashs128`: Squeezes the state to produce a 128-bit hash.
 
-## Building
-
-### Quick Start with Make
-
-```bash
-make
-```
-
-This builds everything:
-- Static library: `lib/libsshash.a`
-- Speed test: `ctests/test_speed`
-- Security test: `ctests/test_security`
-- Executable tool: `bin/sshash`
-
-Available targets:
-```bash
-make clean     # Remove all built artifacts
-```
-
-### Manual Compilation (without Make)
+### Compilation
 
 Create output directories:
 ```bash
