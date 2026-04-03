@@ -41,7 +41,7 @@ static inline void sshashmix32(uint32_t* restrict buf, size_t words, size_t roun
 uint64_t sshasha256(uint64_t state[8], uint64_t ctr, const void* restrict data, size_t datalen){
     size_t aligned = (datalen / (sizeof(uint64_t) * 4));
     for(size_t i = 0; i < aligned; ++i){
-        state[0] ^= ctr++;
+        state[0] ^= ctr++ + 1;
         for(size_t h = 0; h < 4; ++h)
         #ifdef B_ENDIAN
             state[h] ^= __builtin_bswap64(((const uint64_t*)data)[(i * 4) + h]);
@@ -65,6 +65,7 @@ uint64_t sshasha256(uint64_t state[8], uint64_t ctr, const void* restrict data, 
             uint64_t dump = 0;
             for(size_t b = 0; b < tail_bytes; ++b)
                 dump |= (uint64_t)((const uint8_t*)data)[(aligned * (sizeof(uint64_t) * 4)) + (words * sizeof(uint64_t)) + b] << (b * 8);
+            dump |= 1ull << (tail_bytes * 8);
             state[words] ^= dump;
         }
         sshashmix64(state, 8, SSHASH_SECURITY_MARGIN);
@@ -72,7 +73,7 @@ uint64_t sshasha256(uint64_t state[8], uint64_t ctr, const void* restrict data, 
     return ctr;
 }
 void sshashs256(uint64_t state[8], uint64_t hash[4]){
-    state[0] ^= 1;
+    state[7] ^= 1;
     sshashmix64(state, 8, 8);
     for(size_t i = 0; i < 4; ++i)
         #ifdef B_ENDIAN
@@ -84,7 +85,7 @@ void sshashs256(uint64_t state[8], uint64_t hash[4]){
 uint32_t sshasha128(uint32_t state[8], uint32_t ctr, const void* restrict data, size_t datalen){
     size_t aligned = (datalen / (sizeof(uint32_t) * 4));
     for(size_t i = 0; i < aligned; ++i){
-        state[0] ^= ctr++;
+        state[0] ^= ctr++ + 1;
         for(size_t h = 0; h < 4; ++h)
         #ifdef B_ENDIAN
             state[h] ^= __builtin_bswap32(((const uint32_t*)data)[(i * 4) + h]);
@@ -108,6 +109,7 @@ uint32_t sshasha128(uint32_t state[8], uint32_t ctr, const void* restrict data, 
             uint32_t dump = 0;
             for(size_t b = 0; b < tail_bytes; ++b)
                 dump |= (uint32_t)((const uint8_t*)data)[(aligned * (sizeof(uint32_t) * 4)) + (words * sizeof(uint32_t)) + b] << (b * 8);
+            dump |= 1u << (tail_bytes * 8);
             state[words] ^= dump;
         }
         sshashmix32(state, 8, SSHASH_SECURITY_MARGIN);
@@ -115,7 +117,7 @@ uint32_t sshasha128(uint32_t state[8], uint32_t ctr, const void* restrict data, 
     return ctr;
 }
 void sshashs128(uint32_t state[8], uint32_t hash[4]){
-    state[0] ^= 1;
+    state[7] ^= 1;
     sshashmix32(state, 8, 8);
     for(size_t i = 0; i < 4; ++i)
         #ifdef B_ENDIAN
