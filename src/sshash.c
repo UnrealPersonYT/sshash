@@ -77,9 +77,9 @@ void sshashs256(uint64_t state[8], uint64_t hash[4]){
     sshashmix64(state, 8, 8);
     for(size_t i = 0; i < 4; ++i)
         #ifdef B_ENDIAN
-            hash[i] = __builtin_bswap64(state[i] ^ state[i + 4]);
+            hash[i] = __builtin_bswap64(state[i]);
         #else
-            hash[i] = state[i] ^ state[i + 4];
+            hash[i] = state[i];
         #endif
 }
 uint32_t sshasha128(uint32_t state[8], uint32_t ctr, const void* restrict data, size_t datalen){
@@ -121,8 +121,8 @@ void sshashs128(uint32_t state[8], uint32_t hash[4]){
     sshashmix32(state, 8, 8);
     for(size_t i = 0; i < 4; ++i)
         #ifdef B_ENDIAN
-            hash[i] = __builtin_bswap32(state[i] ^ state[i + 4]);
+            hash[i] = __builtin_bswap32(state[i]);
         #else
-            hash[i] = state[i] ^ state[i + 4];
+            hash[i] = state[i];
         #endif
 }
