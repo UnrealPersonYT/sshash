@@ -76,7 +76,7 @@ Run tests:
 - `include/` - Public headers
 - `lib/` - Compiled library
 - `tests/` - Test suite
-- `ctests/` - C-specific tests
+- `ctests/` - Compiled tests
 - `bin/` - Compiled binaries
 - `tools/` - Utility tools
 
